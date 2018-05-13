@@ -1,1 +1,49 @@
-% start
+\documentclass[12pt] {article}
+\usepackage[margin=1in]{geometry}
+\renewcommand{\baselinestretch}{2} %double space, safe for fancy headers
+\usepackage{pslatex} %Times font
+\usepackage{apacite} %apa citation style
+\bibliographystyle{apacite}
+%\usepackage[pdfborder={0 0 0}]{hyperref}%for hyperlinks without ugly boxes
+\usepackage{graphicx} %for figures
+\usepackage{enumerate} %for lists
+\usepackage{fancyhdr} %header
+\pagestyle{fancy}
+\usepackage[font={small,sf},format=plain,labelfont=bf,up]{caption}
+\fancyhf{}
+\fancyhead[l,lo]{Harshita Gupta \textit{Thinking Queerly Timeline}} %left top header
+\fancyhead[r,ro]{\thepage} %right top header
+\begin{document}
+\title{CS262 Distributed Systems Final Project: Crowdsourcing Timeline Application for Harvard College Office of BGLTQ Student Life}
+\author{Harshita Gupta}
+\date{May 11, 2018}
+\maketitle
+\thispagestyle{empty}
+\bigskip
+%\tableofcontents
+\pagebreak
+\setcounter{page}{1}
+\section{Abstract}
+\section{Introduction: Thinking Queerly's Timeline Activity}
+If you are writing about a particular application, this will be about a page describing the problem that your customer has that the application will solve, but also talk about the interesting problems that you have to solve to give the application to your customer (after all, this is a research paper).
+talk about the quoffice's work, the popularity of the timeline activity, its usefulness, the current clunky status
+
+\section{The Application}
+longest section
+what was its structure and how does it solve the research problem?
+
+the code that you write is really the instrument you build to test your hypothesis. So this is the section where you describe that instrument, convincing the reader that the instrument is both accurate and the right instrument for this measurement. It is also where you share your craft with your reader. 
+
+The goal is to give enough detail to convince the reader that the instrument really works, without going into so much detail that they reader gets bored. It is a trade-off. Don’t use this section to show how clever you are. If this is done correctly, the reaction of the reader should be “oh, that’s obvious.”
+
+\section{Results}
+If you were building a particular application for a particular use, how well did it work? If you constructed a model, what did the model show? Most importantly, how did the work that you talked about in the previous section give you data or evidence that you can use to answer the question you set out in the first section. This will be 2 to 4 pages on average, and should show the reader that you actually addressed the question you planned on addressing.
+
+A note on negative results. As a field, we are terrible at reporting negative results. But those results are important, too. If things turned out differently than you expected, that should be discussed in your results section. You need to explain why things didn’t work out as you thought they would. But negative results are still results; reporting them can show others that this line of inquiry doesn’t pan out, and may save the CS community a lot of time. Don’t feel bad about being wrong; the only folks who are never wrong are those who don’t do interesting work. 
+
+\section{In Summation}
+A final section, generally about a page or two, sums things up. Remind the reader of the question, the way you addressed that question, the results you got and what you can conclude from those results. This is also a great place to think about what the next experiment/model/enhancement should be. Rarely will a paper give the final answer to a problem; think about what the next question to ask is. 
+
+
+\pagebreak
+\end{document}
