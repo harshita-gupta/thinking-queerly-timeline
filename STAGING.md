@@ -36,3 +36,4 @@ The proposed system would be a mobile and desktop compatible web app. It would o
 
 ## STAGE 6
 - Work on a limited budget: either use Azure&#39;s services that are free for students or constrain the budget to a specific amount. Warn the QuOffice when the storage usage is nearing a budget constraint.
+
