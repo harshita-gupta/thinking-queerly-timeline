@@ -9,6 +9,9 @@
     <p>
         {{form.name.label}} <br>
         {{form.name}} <br>
+        {{form.unique_str.label}} <br>
+        {{form.unique_str.description}} <br>
+        {{form.unique_str}} <br>
         {{form.date.label}} <br>
         {{form.date}} <br>
         {{form.question.label}} <br>
@@ -21,14 +24,31 @@
 
 <h3>Session List</h3>
 {% if sessions is defined %}
-    {% for session in sessions %}
-        <p>
-            {{session.name}}
-            {{session.date}}
-            {{session.question}}
-            {{session.admin_owner}}
-        </p>
-    {% endfor %}
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Date</th> 
+            <th>Question</th>
+            <th>Creator</th>
+            <th>Pariticipant Form</th>
+            <th>View Timeline</th>
+        </tr>
+        {% for session in sessions %}
+        <tr>
+            <td>{{session.name}} </td>
+            <td>{{session.date}} </td>
+            <td>{{session.question}} </td>
+            <td>{{session.admin_owner}} </td>
+            <!-- <td>
+                { % if session.unique_str is defined % }
+                    {{url_for('session_id_participate', session_str=session.unique_str)}}
+                { % endif % }
+            </td>
+            <td> </td> -->
+        </tr>
+        {% endfor %}
+    </table>
+    
 {% else %}
     No sessions exist
 {% endif %}

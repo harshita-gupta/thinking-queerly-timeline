@@ -42,6 +42,10 @@ class WorkshopCreationForm(FlaskForm):
             datetime.date.today().month, 
             datetime.date.today().day))
     question = StringField('Question for participants', validators=[DataRequired()])
+    unique_str = StringField(
+        'Unique Session String', 
+        description="A short sequence of characters that your workshop participants will use to access the session.",
+        validators=[DataRequired()])
     unit_is_year = SelectField('Timeline Style', choices=[("year", "Yearlong"), ("life", "Lifelong")])
     submit = SubmitField('Create Workshop Session')
 

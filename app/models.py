@@ -26,6 +26,7 @@ class Admin(UserMixin, db.Model):
 
 class WorkshopActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    unique_str = db.Column(db.String(20), unique=True, index=True)
     name = db.Column(db.String(100))
     date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     question = db.Column(db.String(140))

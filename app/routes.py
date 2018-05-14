@@ -56,6 +56,7 @@ def admin_panel():
             date=form.date.data, 
             question=form.question.data, 
             unit_is_year=True if form.unit_is_year.data == "year" else False, 
+            unique_str=form.unique_str.data,
             admin_owner=current_user.id)
         db.session.add(workshop)
         db.session.commit()
@@ -67,22 +68,29 @@ def admin_panel():
     return render_template("admin_panel.html", form=form, sessions=WorkshopActivity.query.all())
 
 
-@app.route('/session/<session_id>', methods=['GET', 'POST'])
-def session_id_participate(session_id):
-    workshop = WorkshopActivity.query.get(int(session_id))
+@app.route('/session/<session_str>', methods=['GET', 'POST'])
+def session_id_participate(session_str):
+    
+    '''
+    The session participation page allows a workshop participant to submit post-its to a timeline.
+    The participant must go to the appropriate link defined at /session/id to participate.
+    '''
+
+    # Retrieve session that the user is participating in
+    workshop = WorkshopActivity.query.filter_by(unique_str=session_str)
     workshop = WorkshopActivity(question="q is here", name="ws name is here", date="date is here", unit_is_year=False)
     form = ContributeToTimelineYearlong(request.form) if workshop.unit_is_year else ContributeToTimelineLifelong(request.form)
     if form.validate_on_submit():
         print("validated")
         flash('Submitted!')
-        return redirect(url_for('session_id_participate', session_id=session_id))
+        return redirect(url_for('session_id_participate', session_str=session_str))
     elif form.errors: 
         flash(form.errors)
     return render_template("session_participate.html", session=workshop, form=form)
 
 
-@app.route('/session/<session_id>/view')
-def session_id_view(session_id):
+@app.route('/session/<session_str>/view')
+def session_id_view(session_str):
     return ""
 
 
