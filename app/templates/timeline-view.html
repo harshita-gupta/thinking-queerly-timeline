@@ -16,7 +16,9 @@
 <h1>{{session.question}} </h1>
 <h2>{{session.name}}</h2>
 <h3>{{session.date.strftime('%B %e, %Y')}}</h3>
-
+<h4>
+If you are a workshop participant, contribute to the timeline <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">here.</a>
+</h4>
 <section class="timeline">
     <!-- <div class="entries"> -->
     <ol>
@@ -29,7 +31,7 @@
                     {% if is_yearlong %}
                         {{post.mdytimestamp}}
                     {% else %}
-                        {{post.year_timestamp}}
+                        Age {{post.year_timestamp}}
                     {% endif %}
                 </time>
                 <!-- </div> -->
