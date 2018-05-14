@@ -9,7 +9,9 @@ form is a FlaskForm of type ContributeToTimeline. -->
 <h1>{{session.question}} </h1>
 <h2>{{session.name}}</h2>
 <h3>{{session.date.strftime('%B %e, %Y')}}</h3>
-
+<h4>
+    View the timeline contributions <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">here.</a>
+</h4>
 <div class="container">
     <div class="row">
         <form class="form form-horizontal form-group" action="" method="post" role="form">

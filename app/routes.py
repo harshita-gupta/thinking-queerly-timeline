@@ -129,6 +129,6 @@ def register():
         db.session.commit()
         flash('Congratulations, you are now a registered admin!')
         return redirect(url_for('login'))
-    else: 
+    elif form.errors: 
         flash(form.errors)
     return render_template('register.html', title='Register', form=form)
