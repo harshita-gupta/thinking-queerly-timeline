@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, IntegerField, FieldList, FormField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, IntegerField, FieldList, FormField, TextAreaField
 from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange
 from app.models import Admin
 import datetime
@@ -51,7 +51,7 @@ class WorkshopCreationForm(FlaskForm):
 
 
 class SingleTimelineEntryGeneral(FlaskForm):
-    body = StringField('Post-It Body')
+    body = TextAreaField('Post-It Body')
     on_sex = SelectField('Entry Type', choices=[("sex", 'Sexuality'), ("gender", 'Gender')])
 
 
@@ -61,7 +61,7 @@ class SingleTimelineEntryLifelong(SingleTimelineEntryGeneral):
 
 
 class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
-    timestamp = DateField('Time of Year (MM-DD)', validators=[DataRequired()], format='%m-%d')
+    timestamp = DateField('Time of Year (MM-DD)', format='%m-%d')
 
 
 class ContributeToTimelineYearlong(FlaskForm):

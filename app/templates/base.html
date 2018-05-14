@@ -4,6 +4,13 @@
     Thinking Queerly Timelines
 {% endblock %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='u-styles.css')}}">
+{% endblock %}
+
+
 {% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container">
