@@ -46,9 +46,11 @@
                         <td>{{session.unit_is_year}} </td>
                         <td>{{session.admin_owner}} </td>
                         <td>
-                            {{url_for('session_id_participate', session_str=session.unique_str)}}
+                            <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">{{url_for('session_id_participate', session_str=session.unique_str)}}</a>
                         </td>
-                        <td> </td>
+                        <td> 
+                            <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">{{url_for('session_id_view', session_str=session.unique_str)}}</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
