@@ -65,7 +65,7 @@ class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
 
 
 class ContributeToTimelineYearlong(FlaskForm):
-    submissions = FieldList(FormField(SingleTimelineEntryYearlong, validators=[Optional()]), min_entries=5)
+    submissions = FieldList(FormField(SingleTimelineEntryYearlong), min_entries=5, validators=[Optional()])
     submit = SubmitField('Submit')
 
 
