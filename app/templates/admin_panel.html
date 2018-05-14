@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- requires form and sessions object -->
+<p>Welcome! Create a session.</p>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{form.name.label}} <br>
+        {{form.name}} <br>
+        {{form.date.label}} <br>
+        {{form.date}} <br>
+        {{form.question.label}} <br>
+        {{form.question}} <br>
+        {{form.unit_is_year.label}} <br>
+        {{form.unit_is_year}} <br>
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+
+<h3>Session List</h3>
+{% if sessions %}
+    {% for session in sessions %}
+        <p>session here</p>
+    {% endfor %}
+{% else %}
+    No sessions exist
+{% endif %}
+{% endblock %}

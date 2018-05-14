@@ -29,7 +29,7 @@ class WorkshopActivity(db.Model):
     name = db.Column(db.String(100))
     date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     question = db.Column(db.String(140))
-    unit_is_year = db.Column(db.Boolean(), default=True)
+    unit_is_year = db.Column(db.Boolean(), default=False)
     admin_owner = db.Column(db.Integer, db.ForeignKey("admin.id"))
     postits = db.relationship('PostIt', backref='session', lazy='dynamic')
 

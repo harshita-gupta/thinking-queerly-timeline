@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+<!-- This template relies on the variables session and form.  -->
+<!-- session is a database model object of type WorkshopActivity.
+form is a FlaskForm of type ContributeToTimeline. -->
+
+{% block content %}
+<h1>{{session.question}} </h1>
+<h2>{{session.name}}</h2>
+<h3>{{session.date}}</h3>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {% for submission in form.submissions %}
+        {{submission.on_sex.label}} </br>
+        {{submission.on_sex}} </br>
+        {{submission.timestamp.label}} </br>
+        {{submission.timestamp}} </br>
+        {{submission.body.label}} </br>
+        {{submission.body}} </br>
+    {% endfor %}
+    <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

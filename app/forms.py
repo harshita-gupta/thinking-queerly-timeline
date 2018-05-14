@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, IntegerField, FieldList, FormField
+from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange
 from app.models import Admin
+import datetime
 
 
 class AdminLoginForm(FlaskForm):
@@ -28,3 +29,41 @@ class AdminRegistration(FlaskForm):
         user = Admin.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class WorkshopCreationForm(FlaskForm): 
+    name = StringField('Workshop Name', validators=[DataRequired()])
+    date = DateField(
+        'Workshop Date', 
+        validators=[DataRequired()], 
+        format='%m-%d-%y',  
+        default=datetime.date(
+            datetime.date.today().year, 
+            datetime.date.today().month, 
+            datetime.date.today().day))
+    question = StringField('Question for participants', validators=[DataRequired()])
+    unit_is_year = SelectField('Timeline Style', choices=[("year", "Yearlong"), ("life", "Lifelong")])
+    submit = SubmitField('Create Workshop Session')
+
+class SingleTimelineEntryGeneral(FlaskForm):
+    body = StringField('Entry')
+    on_sex = SelectField('', choices=[("sex", 'Sexuality'), ("gender", 'Gender')])
+
+
+class SingleTimelineEntryLifelong(SingleTimelineEntryGeneral):
+    timestamp = IntegerField(
+        'Age', validators=[DataRequired(), 
+        NumberRange(min=0, message="Age cannot be negative!")])
+
+
+class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
+    timestamp = DateField('Time of Year (MM-DD)', validators=[DataRequired()], format='%m-%d')
+
+
+class ContributeToTimelineYearlong(FlaskForm):
+    submissions = FieldList(FormField(SingleTimelineEntryYearlong), min_entries=1)
+    submit = SubmitField('Submit')
+
+class ContributeToTimelineLifelong(FlaskForm):
+    submissions = FieldList(FormField(SingleTimelineEntryLifelong), min_entries=1)
+    submit = SubmitField('Submit')
