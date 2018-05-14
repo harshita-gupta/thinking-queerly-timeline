@@ -1,10 +1,17 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+{% block app_content %}
 <!-- requires form and sessions object -->
 <p>Welcome! Create a session.</p>
 
-<form action="" method="post">
+<div class="row">
+    <div class="col-md-4">
+        {{wtf.quick_form(form)}}
+    </div>
+</div>
+
+<!-- <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
         {{form.name.label}} <br>
@@ -20,7 +27,7 @@
         {{form.unit_is_year}} <br>
     </p>
     <p>{{ form.submit() }}</p>
-</form>
+</form> -->
 
 <h3>Session List</h3>
 {% if sessions is defined %}

@@ -51,8 +51,8 @@ class WorkshopCreationForm(FlaskForm):
 
 
 class SingleTimelineEntryGeneral(FlaskForm):
-    body = StringField('Entry')
-    on_sex = SelectField('', choices=[("sex", 'Sexuality'), ("gender", 'Gender')])
+    body = StringField('Post-It Body')
+    on_sex = SelectField('Entry Type', choices=[("sex", 'Sexuality'), ("gender", 'Gender')])
 
 
 class SingleTimelineEntryLifelong(SingleTimelineEntryGeneral):

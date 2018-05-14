@@ -110,7 +110,10 @@ def session_id_participate(session_str):
 def session_id_view(session_str):
     # Retrieve session that the user is participating in
     workshop = WorkshopActivity.query.filter_by(unique_str=session_str).first()
-    postits = workshop.postits.all()
+    if workshop.unit_is_year:
+        postits = workshop.postits.orderby(PostIt.mdy_timestamp).all()
+    else:
+        postits = workshop.postits.orderby(PostIt.year_timestamp).all()
     return render_template('timeline-view.html', posts=postits)
 
 
