@@ -57,8 +57,7 @@ class SingleTimelineEntryGeneral(FlaskForm):
 
 class SingleTimelineEntryLifelong(SingleTimelineEntryGeneral):
     timestamp = IntegerField(
-        'Age',
-        NumberRange(min=0, message="Age cannot be negative!")])
+        'Age', validators=[NumberRange(min=0, message="Age cannot be negative!")])
 
 
 class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):

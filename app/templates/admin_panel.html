@@ -11,52 +11,50 @@
     </div>
 </div>
 
-<!-- <form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{form.name.label}} <br>
-        {{form.name}} <br>
-        {{form.unique_str.label}} <br>
-        {{form.unique_str.description}} <br>
-        {{form.unique_str}} <br>
-        {{form.date.label}} <br>
-        {{form.date}} <br>
-        {{form.question.label}} <br>
-        {{form.question}} <br>
-        {{form.unit_is_year.label}} <br>
-        {{form.unit_is_year}} <br>
-    </p>
-    <p>{{ form.submit() }}</p>
-</form> -->
 
-<h3>Session List</h3>
-{% if sessions is defined %}
-    <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>Date</th> 
-            <th>Question</th>
-            <th>Unit is Year</th>
-            <th>Creator</th>
-            <th>Pariticipant Form</th>
-            <th>View Timeline</th>
-        </tr>
-        {% for session in sessions %}
-        <tr>
-            <td>{{session.name}} </td>
-            <td>{{session.date}} </td>
-            <td>{{session.question}} </td>
-            <td>{{session.unit_is_year}} </td>
-            <td>{{session.admin_owner}} </td>
-            <td>
-                {{url_for('session_id_participate', session_str=session.unique_str)}}
-            </td>
-            <td> </td>
-        </tr>
-        {% endfor %}
-    </table>
-    
-{% else %}
-    No sessions exist
-{% endif %}
+<div class="container" style="padding: 10px; ">
+    <h1>Sessions List</h1>
+        <br/>
+        <div id="toolbar"></div>
+        {% if sessions is defined %}
+            <table
+            class="table table-striped table-bordered"
+            id="table"
+            data-toggle="true"
+            data-toolbar="#toolbar"
+            data-search="true"
+            data-show-columns="true"
+            data-pagination="true"
+            data-height="500">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th> 
+                        <th>Question</th>
+                        <th>Unit is Year</th>
+                        <th>Creator</th>
+                        <th>Pariticipant Form</th>
+                        <th>View Timeline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in sessions %}
+                    <tr>
+                        <td>{{session.name}} </td>
+                        <td>{{session.date}} </td>
+                        <td>{{session.question}} </td>
+                        <td>{{session.unit_is_year}} </td>
+                        <td>{{session.admin_owner}} </td>
+                        <td>
+                            {{url_for('session_id_participate', session_str=session.unique_str)}}
+                        </td>
+                        <td> </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            No sessions exist
+        {% endif %}        
+</div>
 {% endblock %}
