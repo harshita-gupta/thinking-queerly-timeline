@@ -31,7 +31,7 @@
                         <th>Name</th>
                         <th>Date</th> 
                         <th>Question</th>
-                        <th>Unit is Year</th>
+                        <th>Timeline Range</th>
                         <th>Creator</th>
                         <th>Pariticipant Form</th>
                         <th>View Timeline</th>
@@ -41,10 +41,16 @@
                     {% for session in sessions %}
                     <tr>
                         <td>{{session.name}} </td>
-                        <td>{{session.date}} </td>
+                        <td>{{session.date.strftime('%m-%d')}} </td>
                         <td>{{session.question}} </td>
-                        <td>{{session.unit_is_year}} </td>
-                        <td>{{session.admin_owner}} </td>
+                        <td>
+                            {% if session.unit_is_year %} 
+                                Year-Round
+                            {% else %}
+                                Lifelong
+                            {% endif %}
+                        </td>
+                        <td>{{session.creator.username}} </td>
                         <td>
                             <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">{{url_for('session_id_participate', session_str=session.unique_str)}}</a>
                         </td>
