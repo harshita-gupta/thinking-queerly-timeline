@@ -43,11 +43,12 @@ class WorkshopCreationForm(FlaskForm):
             datetime.date.today().day))
     question = StringField('Question for participants', validators=[DataRequired()])
     unique_str = StringField(
-        'Unique Session String', 
+        'Unique Session String',
         description="A short sequence of characters that your workshop participants will use to access the session.",
         validators=[DataRequired()])
     unit_is_year = SelectField('Timeline Style', choices=[("year", "Yearlong"), ("life", "Lifelong")])
     submit = SubmitField('Create Workshop Session')
+
 
 class SingleTimelineEntryGeneral(FlaskForm):
     body = StringField('Entry')
@@ -65,9 +66,10 @@ class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
 
 
 class ContributeToTimelineYearlong(FlaskForm):
-    submissions = FieldList(FormField(SingleTimelineEntryYearlong), min_entries=1)
+    submissions = FieldList(FormField(SingleTimelineEntryYearlong), min_entries=5)
     submit = SubmitField('Submit')
 
+
 class ContributeToTimelineLifelong(FlaskForm):
-    submissions = FieldList(FormField(SingleTimelineEntryLifelong), min_entries=1)
+    submissions = FieldList(FormField(SingleTimelineEntryLifelong), min_entries=5)
     submit = SubmitField('Submit')

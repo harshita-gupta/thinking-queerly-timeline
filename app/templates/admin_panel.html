@@ -29,6 +29,7 @@
             <th>Name</th>
             <th>Date</th> 
             <th>Question</th>
+            <th>Unit is Year</th>
             <th>Creator</th>
             <th>Pariticipant Form</th>
             <th>View Timeline</th>
@@ -38,6 +39,7 @@
             <td>{{session.name}} </td>
             <td>{{session.date}} </td>
             <td>{{session.question}} </td>
+            <td>{{session.unit_is_year}} </td>
             <td>{{session.admin_owner}} </td>
             <td>
                 {{url_for('session_id_participate', session_str=session.unique_str)}}

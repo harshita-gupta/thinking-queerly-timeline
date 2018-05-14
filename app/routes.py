@@ -77,12 +77,29 @@ def session_id_participate(session_str):
     '''
 
     # Retrieve session that the user is participating in
-    workshop = WorkshopActivity.query.filter_by(unique_str=session_str)
-    workshop = WorkshopActivity(question="q is here", name="ws name is here", date="date is here", unit_is_year=False)
+    workshop = WorkshopActivity.query.filter_by(unique_str=session_str).first()
     form = ContributeToTimelineYearlong(request.form) if workshop.unit_is_year else ContributeToTimelineLifelong(request.form)
+    
+    # Responding to a POST request
     if form.validate_on_submit():
-        print("validated")
+        # Form submitted correctly
         flash('Submitted!')
+
+        # Retrieving post-its from the form and committing to DB.
+        for postit in form.submissions.entries:
+            if not postit.body.data:
+                continue
+            p = PostIt(
+                body=postit.body.data,
+                on_sex=True if postit.on_sex.data == "sex" else False,
+                session_id=workshop.id,
+                session=workshop)
+            if workshop.unit_is_year:
+                p.mdy_timestamp = postit.timestamp.data
+            else: 
+                p.year_timestamp = postit.timestamp.data
+            db.session.add(p)
+        db.session.commit()
         return redirect(url_for('session_id_participate', session_str=session_str))
     elif form.errors: 
         flash(form.errors)
@@ -91,7 +108,10 @@ def session_id_participate(session_str):
 
 @app.route('/session/<session_str>/view')
 def session_id_view(session_str):
-    return ""
+    # Retrieve session that the user is participating in
+    workshop = WorkshopActivity.query.filter_by(unique_str=session_str).first()
+    postits = workshop.postits.all()
+    return render_template('timeline-view.html', posts=postits)
 
 
 @app.route('/register', methods=['GET', 'POST'])
