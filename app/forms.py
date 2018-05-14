@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, IntegerField, FieldList, FormField, TextAreaField
-from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange
+from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange, Optional
 from app.models import Admin
 import datetime
 
@@ -57,7 +57,7 @@ class SingleTimelineEntryGeneral(FlaskForm):
 
 class SingleTimelineEntryLifelong(SingleTimelineEntryGeneral):
     timestamp = IntegerField(
-        'Age', validators=[NumberRange(min=0, message="Age cannot be negative!")])
+        'Age', validators=[Optional(), NumberRange(min=0, message="Age cannot be negative!")])
 
 
 class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
@@ -65,7 +65,7 @@ class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
 
 
 class ContributeToTimelineYearlong(FlaskForm):
-    submissions = FieldList(FormField(SingleTimelineEntryYearlong), min_entries=5)
+    submissions = FieldList(FormField(SingleTimelineEntryYearlong, validators=[Optional()]), min_entries=5)
     submit = SubmitField('Submit')
 
 

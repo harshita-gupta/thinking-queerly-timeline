@@ -8,7 +8,7 @@ form is a FlaskForm of type ContributeToTimeline. -->
 {% block app_content %}
 <h1>{{session.question}} </h1>
 <h2>{{session.name}}</h2>
-<h3>{{session.date}}</h3>
+<h3>{{session.date.strftime('%B %e, %Y')}}</h3>
 
 <div class="container">
     <div class="row">
@@ -16,6 +16,7 @@ form is a FlaskForm of type ContributeToTimeline. -->
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
             {% for child in form.submissions %}
+                {{ child.hidden_tag() }}
                 <div class="panel col-sm-4 col-sm-offset-1">
                     {% for field in child if field.widget.input_type != 'hidden' %}
                         {{ wtf.form_field(field) }}

@@ -66,6 +66,10 @@ body {
   background: #fff;
 }
 
+li .onsex {
+  background: gray;
+}
+
 .timeline ol li:last-child {
   width: 280px;
 }

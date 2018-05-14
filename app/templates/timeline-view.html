@@ -15,13 +15,13 @@
 {% block app_content %}
 <h1>{{session.question}} </h1>
 <h2>{{session.name}}</h2>
-<h3>{{session.date}}</h3>
+<h3>{{session.date.strftime('%B %e, %Y')}}</h3>
 
 <section class="timeline">
     <!-- <div class="entries"> -->
     <ol>
         {% for post in posts %}
-            <li>
+            <li {% if post.on_sex %} class="onsex" {% endif %}>
             <div>
             <!-- <div class="entry"> -->
                 <time>
@@ -38,7 +38,7 @@
                 <!-- </div> -->
             </div>
         </li>
-            {% endfor %}
+        {% endfor %}
         
     </ol>
     <!-- </div> -->
