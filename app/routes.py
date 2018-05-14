@@ -114,6 +114,9 @@ def session_id_view(session_str):
         postits = workshop.postits.order_by(PostIt.mdy_timestamp).all()
     else:
         postits = workshop.postits.order_by(PostIt.year_timestamp).all()
+    # print(workshop.mdy_timestamp)
+    for p in postits:
+        print(type(p.mdy_timestamp))
     return render_template('timeline-view.html', posts=postits, session=workshop, is_yearlong=workshop.unit_is_year)
 
 

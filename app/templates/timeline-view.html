@@ -28,8 +28,8 @@ If you are a workshop participant, contribute to the timeline <a href="{{url_for
             <!-- <div class="entry"> -->
                 <time>
                 <!-- <div class="title"> -->
-                    {% if is_yearlong %}
-                        {{post.mdytimestamp}}
+                    {% if session.unit_is_year %}
+                        {{ post.mdy_timestamp.strftime('%B %e') }}
                     {% else %}
                         Age {{post.year_timestamp}}
                     {% endif %}
