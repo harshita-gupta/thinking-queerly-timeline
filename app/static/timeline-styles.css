@@ -213,7 +213,7 @@ body {
     transform: translateX(-50%);
     border: none;
     border-left: 1px solid white;
-    height: 25px;
+    height: auto;
   }
 
   .timeline ol li:last-child,
