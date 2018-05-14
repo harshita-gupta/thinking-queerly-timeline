@@ -20,7 +20,7 @@
 </form>
 
 <h3>Session List</h3>
-{% if sessions %}
+{% if sessions is defined %}
     {% for session in sessions %}
         <p>session here</p>
     {% endfor %}

@@ -25,7 +25,7 @@ def login():
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('admin_panel'))
-    else: 
+    elif form.errors:
         flash(form.errors)
     return render_template('login.html', title='Sign In', form=form)
 
@@ -39,14 +39,32 @@ def logout():
 @app.route('/admin_panel', methods=['GET', 'POST'])
 @login_required
 def admin_panel():
+    '''
+    The admin panel is only available to a user who is logged in. 
+    The panel allows administrators to view the list of sessions and create new sessions.
+    '''
     form = WorkshopCreationForm(request.form)
-    sessions = WorkshopActivity.query.all()
+    
+    # Responing to a POST request
     if form.validate_on_submit(): 
-        print("that shit submitted")
+        # Form submitted correctly.
         flash("Session created!")
-    else: 
+
+        # Creating session and committing to DB. 
+        workshop = WorkshopActivity(
+            name=form.name.data, 
+            date=form.date.data, 
+            question=form.question.data, 
+            unit_is_year=True if form.unit_is_year.data == "year" else False, 
+            admin_owner=current_user.id)
+        db.session.add(workshop)
+        db.session.commit()
+    elif form.errors: 
+        # Form submitted incorrectly, displaying errors.
         flash(form.errors)
-    return render_template("admin_panel.html", form=form, session_list=sessions)
+
+    # Return to the admin panel after any operations occur.
+    return render_template("admin_panel.html", form=form, sessions=WorkshopActivity.query.all())
 
 
 @app.route('/session/<session_id>', methods=['GET', 'POST'])
@@ -58,8 +76,8 @@ def session_id_participate(session_id):
         print("validated")
         flash('Submitted!')
         return redirect(url_for('session_id_participate', session_id=session_id))
-    # else: 
-    #     flash(form.errors)
+    elif form.errors: 
+        flash(form.errors)
     return render_template("session_participate.html", session=workshop, form=form)
 
 
