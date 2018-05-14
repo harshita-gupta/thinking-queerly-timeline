@@ -1,5 +1,20 @@
 {% extends 'bootstrap/base.html' %}
 
+<!-- 
+This is the base jinja template that defines the common html and assets across the website. 
+All jinja templates for other pages of the website extend from this one.
+
+This template is architected in accordance with the requirements of flask-bootstrap templates, 
+and defines content via its predefined macros of title, styles, navbar, and content.
+
+To define a new template that extends base.html, it must begin with {% extends "base.html" %}
+Content may be placed inside {% block app_content %} {% endblock %} template tags.
+
+Since base.html extends from a flask-bootstrap template, adding custom stylesheets and javascript must 
+be done according to flask-bootstrap's requirements specified in the docs at
+https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
+-->
+
 {% block title %}
     Thinking Queerly Timelines
 {% endblock %}
@@ -37,6 +52,8 @@
     </nav>
 {% endblock %}
 
+<!-- The only content that is universal across pages is the flash bar, 
+    that displays error and success messages. -->
 {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}

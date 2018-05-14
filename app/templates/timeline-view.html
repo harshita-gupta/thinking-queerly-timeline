@@ -1,56 +1,62 @@
 {% extends "base.html" %}
 
+<!-- 
+    Template for viewing a session's timeline.
+
+    Timeline HTML, CSS, and Javascript open-sourced by Envato Tuts+ at https://codepen.io/tutsplus/pen/QNeJgR. 
+    Modified for Flask and Jinja2 by Harshita Gupta.
+
+    This template must be rendered with the following variables: 
+        session: a database model objct of type WorkshopActivity
+        posts: a list of database model objects of type PostIt, belonging to session.
+ -->
+
+
+ <!-- Links to a custom stylesheet and scripts file that render the timeline.  -->
 {% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{ url_for('static', filename='timeline-styles.css') }}">
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='timeline-styles.css') }}">
 {% endblock %}
 
 {% block scripts %}
-<script src="{{url_for('.static', filename='timeline.js')}}"></script>
-{{super()}}
+    <script src="{{url_for('.static', filename='timeline.js')}}"></script>
+    {{super()}}
 {% endblock %}
 
-
-<!-- needs posts, session, and is_yearlong -->
 {% block app_content %}
-<h1>{{session.question}} </h1>
-<h2>{{session.name}}</h2>
-<h3>{{session.date.strftime('%B %e, %Y')}}</h3>
-<h4>
-If you are a workshop participant, contribute to the timeline <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">here.</a>
-</h4>
-<section class="timeline">
-    <!-- <div class="entries"> -->
-    <ol>
-        {% for post in posts %}
-            <li>
-            <div {% if post.on_sex %} class="onsex" {% endif %}>
-            <!-- <div class="entry"> -->
-                <time>
-                <!-- <div class="title"> -->
-                    {% if session.unit_is_year %}
-                        {{ post.mdy_timestamp.strftime('%B %e') }}
-                    {% else %}
-                        Age {{post.year_timestamp}}
-                    {% endif %}
-                </time>
-                <!-- </div> -->
-                <!-- <div class="body"> -->
-                    <p>{{post.body}}</p>
-                <!-- </div> -->
-            </div>
-        </li>
-        {% endfor %}
-        <li></li>        
-    </ol>
-    <!-- </div> -->
-    <div class="arrows">
-        <button class="arrow arrow__prev disabled" disabled>
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/arrow_prev.svg" alt="prev timeline arrow">
-        </button>
-        <button class="arrow arrow__next">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/arrow_next.svg" alt="next timeline arrow">
-        </button>
-    </div>
-</section>
+    <h1>{{session.question}} </h1>
+    <h2>{{session.name}}</h2>
+    <h3>{{session.date.strftime('%B %e, %Y')}}</h3>
+    <h4>
+    If you are a workshop participant, contribute to the timeline <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">here.</a>
+    </h4>
+    <section class="timeline">
+        <ol>
+            {% for post in posts %}
+                <li>
+                <div {% if post.on_sex %} class="onsex" {% endif %}>
+                    <time>
+                        {% if session.unit_is_year %}
+                            {{ post.mdy_timestamp.strftime('%B %e') }}
+                        {% else %}
+                            Age {{post.year_timestamp}}
+                        {% endif %}
+                    </time>
+                        <p>{{post.body}}</p>
+                </div>
+            </li>
+            {% endfor %}
+            <li></li>        
+        </ol>
+       
+        <div class="arrows">
+            <button class="arrow arrow__prev disabled" disabled>
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/arrow_prev.svg" alt="prev timeline arrow">
+            </button>
+            <button class="arrow arrow__next">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/arrow_next.svg" alt="next timeline arrow">
+            </button>
+        </div>
+
+    </section>
 {% endblock %}

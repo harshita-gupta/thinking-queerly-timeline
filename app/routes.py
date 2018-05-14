@@ -117,7 +117,7 @@ def session_id_view(session_str):
     # print(workshop.mdy_timestamp)
     for p in postits:
         print(type(p.mdy_timestamp))
-    return render_template('timeline-view.html', posts=postits, session=workshop, is_yearlong=workshop.unit_is_year)
+    return render_template('timeline-view.html', posts=postits, session=workshop)
 
 
 @app.route('/register', methods=['GET', 'POST'])

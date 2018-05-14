@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
+<!-- Landing page for the web app; 
+    is barebones for now but can include redirects to sessions based on session ID. -->
+
 {% block app_content %}
 
 <p>If you're a QuOffice Staff member looking to start a workshop, login above.</p>
 
 <p>If you're a workshop participant, to the relative link /session/unique_str and use the string given to you! For example, <a href="https://tq-timeline.herokuapp.com/session/dapa">tq-timeline.herokuapp.com/session/dapa</a></p>
+
 {% endblock %}

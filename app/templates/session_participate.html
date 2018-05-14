@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-<!-- This template relies on the variables session and form.  -->
-<!-- session is a database model object of type WorkshopActivity.
-form is a FlaskForm of type ContributeToTimeline. -->
+<!-- 
+    Template for the page via which workshop participants contribute post-its to a timeline. 
+    Must be rendered with the following variables 
+        session: a database model objct of type WorkshopActivity
+        form: FlaskForm of type ContributeToTimelineYearlong, 
+            or ContributeToTimelineLifelong (indicated by the value of session.unit_is_year).
+-->
 
 {% block app_content %}
 <h1>{{session.question}} </h1>
