@@ -1,11 +1,31 @@
 {% extends "base.html" %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='timeline-styles.css') }}">
+{% endblock %}
+
+
+<!-- needs posts, session, and is_yearlong -->
 {% block app_content %}
-<ul>
-{% for post in posts %}
-<li>
-    {{post.body}}
-</li>    
-{% endfor %}
-</ul>
+<h1>{{session.question}} </h1>
+<h2>{{session.name}}</h2>
+<h3>{{session.date}}</h3>
+
+<div class="entries">
+    {% for post in posts %}
+    <div class="entry">
+        <div class="title">
+            {% if is_yearlong %}
+                {{post.mdytimestamp}}
+            {% else %}
+                {{post.year_timestamp}}
+            {% endif %}
+        </div>
+        <div class="body">
+            <p>{{post.body}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

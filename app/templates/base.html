@@ -21,7 +21,7 @@
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('login') }}">Admin Login</a></li>
                     {% else %}
-                    <li>Logged in as {{ current_user.username }}</li>
+                    <li><a href="{{ url_for('admin_panel') }}">Admin Panel</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
                     {% endif %}
                 </ul>
