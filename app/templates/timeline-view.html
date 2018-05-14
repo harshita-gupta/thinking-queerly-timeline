@@ -21,8 +21,8 @@
     <!-- <div class="entries"> -->
     <ol>
         {% for post in posts %}
-            <li {% if post.on_sex %} class="onsex" {% endif %}>
-            <div>
+            <li>
+            <div {% if post.on_sex %} class="onsex" {% endif %}>
             <!-- <div class="entry"> -->
                 <time>
                 <!-- <div class="title"> -->
@@ -39,7 +39,7 @@
             </div>
         </li>
         {% endfor %}
-        
+        <li></li>        
     </ol>
     <!-- </div> -->
     <div class="arrows">
