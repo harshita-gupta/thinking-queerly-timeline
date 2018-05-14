@@ -22,7 +22,12 @@
 <h3>Session List</h3>
 {% if sessions is defined %}
     {% for session in sessions %}
-        <p>session here</p>
+        <p>
+            {{session.name}}
+            {{session.date}}
+            {{session.question}}
+            {{session.admin_owner}}
+        </p>
     {% endfor %}
 {% else %}
     No sessions exist
