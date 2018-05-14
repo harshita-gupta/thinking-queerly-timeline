@@ -39,12 +39,10 @@
             <td>{{session.date}} </td>
             <td>{{session.question}} </td>
             <td>{{session.admin_owner}} </td>
-            <!-- <td>
-                { % if session.unique_str is defined % }
-                    {{url_for('session_id_participate', session_str=session.unique_str)}}
-                { % endif % }
+            <td>
+                {{url_for('session_id_participate', session_str=session.unique_str)}}
             </td>
-            <td> </td> -->
+            <td> </td>
         </tr>
         {% endfor %}
     </table>
