@@ -37,7 +37,7 @@
                 <div {% if post.on_sex %} class="onsex" {% endif %}>
                     <time>
                         {% if session.unit_is_year%}
-                            { %if post.mdy_timestamp %}
+                            {% if post.mdy_timestamp %}
                                 {{ post.mdy_timestamp.strftime('%B %e') }}
                             {% endif %}
                         {% else %}
