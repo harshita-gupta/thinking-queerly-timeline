@@ -24,4 +24,4 @@ login.login_view = 'login'
 # Bootstrap add-on for styling
 bootstrap = Bootstrap(app)
 
-from app import routes, models
+from app import routes, models, errors
