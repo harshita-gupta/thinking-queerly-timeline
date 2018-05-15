@@ -80,7 +80,8 @@ def download_data(session_str):
 @app.route('/delete_session/<session_str>', methods=['GET'])
 @login_required
 def delete_session(session_str):
-    return
+    print("delete entered")
+    return redirect(url_for('admin_panel'))
 
 '''
 TIMELINE CONTRIBUTION AND VIEWING FUNCTIONS
