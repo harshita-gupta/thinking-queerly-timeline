@@ -1,6 +1,9 @@
 \documentclass[12pt] {article}
+\usepackage{listings}
+\usepackage{tikz-uml}
 \usepackage[margin=1in]{geometry}
-\renewcommand{\baselinestretch}{2} %double space, safe for fancy headers
+\renewcommand{\baselinestretch}{1} %double space, safe for fancy headers
+\usepackage{hyperref}
 \usepackage{pslatex} %Times font
 \usepackage{apacite} %apa citation style
 \bibliographystyle{apacite}
@@ -14,7 +17,7 @@
 \fancyhead[l,lo]{Harshita Gupta \textit{Thinking Queerly Timeline}} %left top header
 \fancyhead[r,ro]{\thepage} %right top header
 \begin{document}
-\title{CS262 Distributed Systems Final Project: Crowdsourcing Timeline Application for Harvard College Office of BGLTQ Student Life}
+\title{CS262 Distributed Systems Final Project: Digitally-Facilitated Workshop Participation Application for Harvard College Office of BGLTQ Student Life\\ \large Live at \href{url}http://tq-timeline.herokuapp.com/}
 \author{Harshita Gupta}
 \date{May 11, 2018}
 \maketitle
@@ -23,27 +26,278 @@
 %\tableofcontents
 \pagebreak
 \setcounter{page}{1}
-\section{Abstract}
-\section{Introduction: Thinking Queerly's Timeline Activity}
-If you are writing about a particular application, this will be about a page describing the problem that your customer has that the application will solve, but also talk about the interesting problems that you have to solve to give the application to your customer (after all, this is a research paper).
-talk about the quoffice's work, the popularity of the timeline activity, its usefulness, the current clunky status
+\section{Introduction}
+
+In the Harvard College Office of BGLTQ Student Life’s (QuOffice's) “Thinking Queerly” workshops, the facilitators prompt participants to interrogate ways in which they`ve learned about normative gender and sexuality across their lifetimes. To this end, we lead two ``timeline activities'' which currently waste a lot of paper and are cumbersome to digitize and commit to institutional memory. For my final project, I would like to build a distributed system that facilitates the activity during the workshop and allows students to participate anonymously via their smartphones. 
+
+Traditionally, the activity is conducted by handing out post-its to the attendees and asking them to write down, on individual post-its, specific moments during which they learned about gender and sexuality across their lifetime. They then stick their 6-10 post-its on a whiteboard, plotting each post-it along a timeline of their life. Once participants are done adding their post-its to the timeline, the group gathers around the timeline and looks for trends/similarities across post-its. 
+
+This activity is arguably one of the most popular of the QuOffice's offerings. We`ve generalized the timeline activity format to offer another similar activity in which the board members of student groups may think about how gender and sexuality is represented in their group across the course of the academic year. The combination of the two provides an opportunity for specific, data-driven critical reflection 
+
+This format of a post-it-based timeline constructed on butcher paper, however, is currently very awkward and cumbersome since the entire group can’t gather around the whiteboard and view the material in any efficient way.
+
+\subsection{Proposed System}
+
+The proposed system would be a mobile and desktop compatible web app. It would offer the following functions: 
+\begin{itemize}
+    \item \textbf{Workshop Administration} Allow QuOffice staff to create a “session” via an admin panel. The session would specify the question that participants must respond to via post-its, and specify the unit of measurement for the timeline’s timeseries: a numerical age or MM/YY date, to allow for different types of timeline questions like “How has your group represented gender and sexuality over the course of the calendar year” (a MM/YY timestamp) versus “how have you learned about gender and sexuality across your life” (a numerical age timestamp). 
+    \begin{itemize}
+        \item Allow the QuOffice to “close” the session via the admin panel so that it doesn’t accept any more submissions. 
+        \item Work on a limited budget: either use Azure’s services that are free for students or constrain the budget to a specific amount. Warn the QuOffice when the storage usage is nearing a budget constraint. Allow the QuOffice to export past session data as a CSV via the admin panel and delete it from the server to free up space for future sessions.
+    \end{itemize}
+    \item \textbf{Participant Contribution} Allow participants to contribute to a specific session over a mobile-compatible interface, type the content for their post-its, and plot each post-it along a timeline.
+    \item \textbf{Timeline Viewing }Have a well-designed view that visually represents the timeline and that can be projected on a screen at the front of the room. This view would live-update as post-its are submitted. 
+    \begin{itemize}
+        \item Have a mobile-compatible version of the same visual timeline so that users can examine the curated submissions more closely on their own phones and scroll through them. 
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Distributed Systems Problems Tackled}
+
+\begin{itemize}
+    \item Working on a limited financial budget. This will require: 
+Finding an Azure/AWS/Google App Engine configuration that takes advantage of our @college email perks as much as possible. 
+Constraining the app`s resource usage to work within the free account’s constraints. (primarily storage, since workshops only have about 40 users at once) 
+    \item Concurrency: participants will be adding content to the timeline simultaneously during the course of the session. The system should handle this gracefully and update the live timeline gracefully as well. 
+    \item Immediate consistency: since this is a live workshop, the data will all be centralized and pushed to all users immediately.
+    \item Live updates: we will need to implement an efficient delta updates scheme so that the live-updating of the timeline is quick and not a drain on the network, since workshops can often end up with $>$ 100 post-its. Sending all of the timeline to each participant’s phone on a “refresh” would not scale well. 
+    \item Support multiple simultaneous workshops: as the QuOffice hopes to expand its offerings, if we do multiple simultaneous workshops during Opening Days, the system should support traffic to multiple active sessions at once. 
+    \item Anonymity: due to the sensitive nature of the content being collected, we should ensure that no IP information/identifying information is retained about submissions. 
+\end{itemize}
 
 \section{The Application}
-longest section
-what was its structure and how does it solve the research problem?
 
-the code that you write is really the instrument you build to test your hypothesis. So this is the section where you describe that instrument, convincing the reader that the instrument is both accurate and the right instrument for this measurement. It is also where you share your craft with your reader. 
+\subsection{Web Development Stack}
+Given that my intent was to develop an application for real-life use at the QuOffice, I prioritized deployment, ease of maintenance, and usability. This motivated my decision to deploy my web app at regular checkpoints during development, to minimize deployment integration time at a later point. 
 
-The goal is to give enough detail to convince the reader that the instrument really works, without going into so much detail that they reader gets bored. It is a trade-off. Don’t use this section to show how clever you are. If this is done correctly, the reaction of the reader should be “oh, that’s obvious.”
+I've built web apps before with Python and Flask and found it maintainable, intuitive, and lightweight for simple apps that don't need to scale past 100-1000 users at a time. Flask is a clean web development stack in its separation of model-view-controller and usage of pythonic language across each of these layers. It uses the templating engine Jinja to dynamically generate HTML pages in response to GET and POST requests, and allows all server logic to be written in Python.
+
+As an example, below is an extract from a jinja template that would be rendered with flask's render\_template call and the additional parameters posts and sessions.
+
+\begin{lstlisting}[language=HTML, basicstyle=\small]
+<section class="timeline">
+  <ol>
+    {% for post in posts %}
+      <li>
+      <div {% if post.on_sex %} class="onsex" {% endif %}>
+        <time>
+          {% if session.unit_is_year%}
+            {% if post.mdy_timestamp %}
+              {{ post.mdy_timestamp.strftime('%B %e') }}
+            {% endif %}
+          {% else %}
+            Age {{post.year_timestamp}}
+          {% endif %}
+        </time>
+          <p>{{post.body}}</p>
+      </div>
+    </li>
+    {% endfor %}
+    <li></li>        
+  </ol>
+</section>
+\end{lstlisting}
+
+Through the use of curly-brace-enclosed templating language, HTML is turned into a jinja template.jinja can auto-generate HTML tags and fill them with the content of variables, without using any javascript.
+
+I chose to work with Heroku because it pairs well with Flask deployments and supports a free tier of PostgreSQL. 
+
+\subsubsection{Virtual Environment}
+
+To ensure that my local development would require minimal deployment overhead, I developed my application within a virtual environment and custom installs of all dependencies. Python's package manager, pip, handled dependency installation and generated a dependency requirements file that Heroku could read from directly. 
+
+\subsection{Design Decisions}
+
+\subsubsection{Database}
+
+My application is interested in storing the following types of data: 
+\begin{itemize}
+    \item A list of workshops, and data about each workshop: what is the title of the workshop, when was it created, what question does it ask participants to engage in for its timeline, what is the measuring unit for its timeline, is the workshop still acive, etc. The workshops should also have a O(1) link to the post-its associated with that workshop.
+    \item Data about the post-its submitted to each workshop: their content, categorization, and position on the timeline.
+    \item A list of administrators and the credentials necessary to log them in.
+\end{itemize}
+
+Given the highly defined structure of the data, I chose to use a SQL rather than NoSQL database to store information. Flask has a very convenient extension called Flask-SQLAlchemy that provides a flask wrapper to the popular Object Relational Mapper SQLAlchemy. The ORM allows Flask applications to manage a database using high-level entities such as classes, objects and methods instead of tables and SQL. SQLAlchemy is an excellent fit for our use case due to its additional property of supporting multiple database engines like MySQL, PostgreSQL and SQLite. This is extremely powerful since Heroku uses PostgreSQL while I will develop locally with SQLite (since SQLite does not require a server). Therefore I can use Heroku's more robust production tools when I deploy, but develop locally with SQLite, and not have to change my application.
+
+I achieve this multi-platform support with a single line of Python code that searches for a Heroku-defined environmnt variable to a database, or sets up a link to an sqlite local databse file:
+\begin{lstlisting}[language=Python]
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
+\end{lstlisting}
+
+The relational database schema is defined as follows: \\\\
+
+
+\begin{tikzpicture} 
+\tiny
+\umlclass{Admin}{ 
+  + id : uint, primary key \\ 
+  + username : string(64), unique \\
+  + email : string(120), unique \\
+  + password_hash : string(128) \\
+  + workshops_created : array of WorkshopActivity \\
+  }{ 
+  + setPassword(p : password) : void \\ 
+  + checkPassword(p: password) : boolean\\
+} 
+\umlclass[width=10ex, x=8]{WorkshopActivity}{
+  + id : uint, primary key\\
+  + unique_str : string(20), unique, indexed \\
+  + name : string(100)  \\
+  + question : string(140) \\
+  + unit_is_year : boolean\\
+  + admin_owner : uint, (primary key Admin)\\
+  + postits : array of PostIt \\
+  + creator : backref to Admin \\
+}{}
+\umlclass[y=-5]{PostIt}{
+  + id : uint, primary key\\
+  + body : string(500) \\
+  + year_timestamp : int, optional \\ 
+  + mdy_timestamp: date, optional \\
+  + on_sex : boolean \\
+  + session_id : uint (primary key WorkshopActivity) \\
+  + session : backref to WorkshopActivity \\
+}{
+}
+% \umlassoc[]{WorkshopActivity}{Admin}
+\end{tikzpicture}
+
+While most of this schema is self-explanatory, I would like to explain further the decision to have a unique string for each workshop that is distinct from the id of the workshop. This is a first step in making the app secure against outsider/aggressor attention: the QuOffice's online materials often get picked up by sites like Breitbart, and so I would not want the content of timelines to be easily locatable by such sources.
+
+Additionally, I use the Flask extension Flask-Migrate to handle database creation and migration for Flask. Flask-Migrate's benefits are twofold: first, it adds database creation and management services for native flask development. Secondly, it is a Flask wrapper for Alembic, a database migration framework for SQLAlchemy that allows making updates to the database schema over the app's lifecycle. Typically this is challenging since relational databases are centered around structured data; Flask-Migrate makes this easier. 
+
+\subsubsection{Authentication}
+
+The application requires authentication for the following purposes: 
+\begin{itemize}
+    \item Exposing an admin panel to administrators only
+    \item Allowing the creation, activation, and deletion of various workshop sessions. 
+    \item Allowing administrators to download CSVs of workshop data: we do not want to allow our data to be bulk-exported and circulable by the public
+\end{itemize}
+
+Therefore, the only access level that needs to be managed is that of the administrator. We will make timeline access public for all who know the unique string for a workshop.
+
+Authentication and access management is handled by another very convenient flask extension: Flask-Login. Flask-Login manages information about user logged-in state, so that users can log in and navigate to different website pages while the app "remembers" that they're still logged in. 
+
+Flask-Login also protects specified view functions, or webpages, from users who aren't logged in. Through a simple login\_required decorator, specific view functions like the admin panel's and the download/delete button's can be access-restricted.
+
+
+\subsubsection{Styling}
+Given my lack of interest or expertise in designing compelling front-end interfaces, I am always interested in having other, more artistically inclined people, do my work for me. I initially considered using Webflow to design the pages; I then would have exported the HTML/CSS/JS that Webflow generated and modified it to create templates that could have content dynamically inserted into them. I ended up not going this route, primarily because Webflow would have charged me \$16 for attempting to download the source files of the designed websites. After this paywall hit me I also realized that using webflow would be overkill. I ended up using Flask-Bootstrap, another(!) flask extension instead.
+
+Flask-Bootstrap provides a few very useful features. It: 
+\begin{itemize}
+    \item automatically applies basic bootstrap styling to the entire website when imported into my base template.
+    \item plugs into jinja to provide automatic stylized templating of forms, which are much of the content of this app
+    \item immediate mobile compatibility
+\end{itemize}
+
+Applying flask-bootstrap to my app only took a few lines of code. Additionally, I was able to replace the following form rendering template: 
+
+\begin{lstlisting}[language=HTML, basicstyle=\small]
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{form.name.label}} <br>
+        {{form.name}} <br>
+        {{form.unique_str.label}} <br>
+        {{form.unique_str.description}} <br>
+        {{form.unique_str}} <br>
+        {{form.date.label}} <br>
+        {{form.date}} <br>
+        {{form.question.label}} <br>
+        {{form.question}} <br>
+        {{form.unit_is_year.label}} <br>
+        {{form.unit_is_year}} <br>
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+\end{lstlisting}
+
+with the below, and have it look beautiful styled! Win win.
+
+\begin{lstlisting}[language=HTML, basicstyle=\small]
+{\% import 'bootstrap/wtf.html' as wtf \%}
+<div class="row">
+    <div class="col-md-4">
+        {{wtf.quick_form(form)}}
+    </div>
+</div>
+\end{lstlisting}
+
+
+\subsection{Website Structure and Features}
+
+Ultimately, the website ended up with the following pages and features:
+\begin{itemize}
+    \item Homepage - few features, currently has links to other pages for your grading purposes, but will eventually be empty
+    \item Workshop contribution pages: found at the pages at $/$session$/<$session-identifier$>$\\
+    Intended to be the landing page for workshop participants. This is the link that QuOffice staff will write on a board or put somewhere.
+    \item Timeline viewing pages: found at $/$session$/<$session-identifier$>/$view\\
+    These are the pages that contain the crowdsourced post-its and display them along a scrollable, mobile-compatible timeline.
+    \item Login, Register, and Logout Pages 
+    \item Admin Panel at /admin\_panel
+    \begin{itemize}
+        \item Create new workshops
+        \item View all existing workshops
+        \item Download content from existing workshops
+        \item Delete workshops
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{The Timeline}
+While I initially considered developing the visual components for the timeline myself, I discovered that there were multiple HTML/CSS/JS timeline templates available online. I selected Envato Tuts' timeline at \href{url}{https://codepen.io/tutsplus/pen/ZKpNwm}, and modified it to work with jinja, because it had the best separation of content and style (minimal styling in the HTML tags), and so would support easy extensibility, and because it was colorful and most resemebled the post-it format we'd had earlier. It was additionally mobile compatible!
 
 \section{Results}
-If you were building a particular application for a particular use, how well did it work? If you constructed a model, what did the model show? Most importantly, how did the work that you talked about in the previous section give you data or evidence that you can use to answer the question you set out in the first section. This will be 2 to 4 pages on average, and should show the reader that you actually addressed the question you planned on addressing.
 
-A note on negative results. As a field, we are terrible at reporting negative results. But those results are important, too. If things turned out differently than you expected, that should be discussed in your results section. You need to explain why things didn’t work out as you thought they would. But negative results are still results; reporting them can show others that this line of inquiry doesn’t pan out, and may save the CS community a lot of time. Don’t feel bad about being wrong; the only folks who are never wrong are those who don’t do interesting work. 
+\subsection{Live Website}
+
+The website is currently live at \href{url}{http://tq-timeline.herokuapp.com/}, and has achieved all my stated goals. Some limitations of the current version that I plan to fix once I polish it for the QuOffice (and once Professor Waldo has looked at it): 
+\begin{itemize}
+    \item currently allows anyone to register, will eventually only allow other admin to create new admin
+    \item doesn't currently allow "turning off" sessions or hiding timelines from the public
+    \item no live update or delta update, you have to refresh the timeline view to get its most recent version
+\end{itemize}
+
+I am quite happy with the final product and impressed at how much Flask and its extensions sped up development; I achieved far more goals than I expected to. 
+
+To test the website, I would take the following steps: 
+\begin{itemize}
+    \item Go to the landing page.
+    \item Click Log in
+    \item Click register
+    \item Register an account
+    \item Log in with this new account
+    \item Check out the admin panel! I have populated it with two sessions of dummy data - follow the links to various timelines and their contribution forms, and try creating your own workshop yourself. Download some session data to test that functionality as well.
+    \item On another browser, open up a timeline contribution link and submit some post-its. View the timeline results in a third browser window. After you submit a result, refresh the page and see the timeline update. 
+    \item Try any of the above steps, especially viewing the timeline, on a mobile phone (or simply by resizing your browser window). It's quite smooth, if I might say so myself.
+\end{itemize}
 
 \section{In Summation}
-A final section, generally about a page or two, sums things up. Remind the reader of the question, the way you addressed that question, the results you got and what you can conclude from those results. This is also a great place to think about what the next experiment/model/enhancement should be. Rarely will a paper give the final answer to a problem; think about what the next question to ask is. 
 
+This project has been a very successful first step towards building a robust timeline application for the Harvard College Office of BLGTQ Student Life's Thinking Queerly Workshop Activities. We have successfully built a fast, cheap, lightweight full-stack web solution that can effectively support timeline activities on multiple devices. The code is open-sourced and ready to be extended.
+
+The next area for focus in the development of the app is security-related features. A few simple features relating to this remain: allowing the QuOffice to "close" or deactivate a session, allowing them to keep the timeline's data in app but close the view off from the public.
+
+I would ideally like to allow the QuOffice to optionally enable ``monitoring'', so that submitted post-its only appear on the visual timeline after they’re screened by another staffer in live-time. Since we sometimes conduct workshops with groups that aren`t ready to maturely engage with our content, we would want to preserve the integrity of the space by not letting the digital medium’s distance enable people’s irresponsible sides. 
+
+I would also like to look into DDOS protection for this app -- this is not an area that I have any knowledge or expertise in, but would be something that I'm interested in learning about.
+
+On the visual end, I would like to make the timeline view use screen real estate more wisely -- I would like the timeline to be more densely packed and use the entire vertical screen area by stacking post its, etc. 
+
+The non-engineering next-steps would be to fine-tune the application with QuOffice staff, and then attempt to run a timeline activity with it. I am curious to see whether participants will feel a positive or negative change in their level of engagement with the activity, now that it's digitized and on their phones. Additionally, will the richness of the post-it contents change?
+
+Ultimately, an excellent first step. I hope that you will get to see the application live when Thinking Queerly comes to your department meetings :) 
+
+\section{Acknowledgements and References}
+
+Miguel Grinberg's Flask Mega-Tutorial, for teaching me how to use Flask two years ago, and for being a very handy reference manual as I returned to it!
+
+Harvard College's Office of BGLTQ+ Student Life, for being one of the best student employment opportunities on campus.
+
+Professor Waldo, for giving me the amazing opportunity to begin work on this project! Cheers.
 
 \pagebreak
 \end{document}
