@@ -31,6 +31,7 @@ def admin_panel():
     
     # Responing to a POST request
     if form.validate_on_submit(): 
+        print(form.erorrs)
         # Form submitted correctly.
         flash("Session created!")
 
@@ -46,7 +47,8 @@ def admin_panel():
         db.session.commit()
     elif form.errors: 
         # Form submitted incorrectly, displaying errors.
-        flash(form.errors)
+        # flash(form.errors)
+        pass
 
     # Return to the admin panel after any operations occur.
     return render_template("admin_panel.html", form=form, sessions=WorkshopActivity.query.all())

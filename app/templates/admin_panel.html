@@ -55,11 +55,15 @@
                         <td>{{session.creator.username}} </td>
                         <td>
                             <!-- link to participant form -->
-                            <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">{{url_for('session_id_participate', session_str=session.unique_str)}}</a>
+                            <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">
+                                {{url_for('session_id_participate', session_str=session.unique_str)}}
+                            </a>
                         </td>
                         <td>
                             <!-- link to timeline viewing page  -->
-                            <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">{{url_for('session_id_view', session_str=session.unique_str)}}</a>
+                            <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">
+                                {{url_for('session_id_view', session_str=session.unique_str)}}
+                            </a>
                         </td>
                         <td>
                             <!-- button to download data -->

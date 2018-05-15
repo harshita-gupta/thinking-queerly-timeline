@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, IntegerField, FieldList, FormField, TextAreaField
 from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange, Optional
-from app.models import Admin
+from app.models import Admin, WorkshopActivity
 import datetime
 
 
@@ -63,6 +63,11 @@ class WorkshopCreationForm(FlaskForm):
         validators=[DataRequired()])
     unit_is_year = SelectField('Timeline Style', choices=[("year", "Yearlong"), ("life", "Lifelong")])
     submit = SubmitField('Create Workshop Session')
+
+    def validate_unique_str(self, unique_str): 
+        ws = WorkshopActivity.query.filter_by(unique_str=unique_str.data).first()
+        if ws is not None: 
+            raise ValidationError('Please use a different unique string.')
 
 
 class SingleTimelineEntryGeneral(FlaskForm):
