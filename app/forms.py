@@ -76,7 +76,7 @@ class SingleTimelineEntryLifelong(SingleTimelineEntryGeneral):
 
 
 class SingleTimelineEntryYearlong(SingleTimelineEntryGeneral):
-    timestamp = DateField('Time of Year (MM-DD)', format='%m-%d')
+    timestamp = DateField('Time of Year (MM-DD)', format='%m-%d', validators=[Optional()])
 
 
 class ContributeToTimelineYearlong(FlaskForm):

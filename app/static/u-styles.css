@@ -1,5 +1,10 @@
 /* Some custom styles. */
 
+.navbar-custom {
+    background-color: #f45b69;
+    color: #ffffff;
+}
+
 form.zebra > div:nth-of-type(1) {
     background: #e0e0e0;
 }
