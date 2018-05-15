@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, IntegerField, FieldList, FormField, TextAreaField
-from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange, Optional
+from wtforms.validators import  DataRequired, ValidationError, Email, EqualTo, NumberRange, Optional, Length
 from app.models import Admin, WorkshopActivity
 import datetime
 
@@ -28,9 +28,9 @@ class AdminRegistration(FlaskForm):
     '''
     The administrator registration form contains a  
     '''
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), Length(max=64)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(max=128)])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
@@ -47,7 +47,7 @@ class AdminRegistration(FlaskForm):
 
 
 class WorkshopCreationForm(FlaskForm): 
-    name = StringField('Workshop Name', validators=[DataRequired()])
+    name = StringField('Workshop Name', validators=[DataRequired(), Length(max=100)])
     date = DateField(
         'Workshop Date', 
         validators=[DataRequired()], 
@@ -56,11 +56,11 @@ class WorkshopCreationForm(FlaskForm):
             datetime.date.today().year, 
             datetime.date.today().month, 
             datetime.date.today().day))
-    question = StringField('Question for participants', validators=[DataRequired()])
+    question = StringField('Question for participants', validators=[DataRequired(), Length(max=140)])
     unique_str = StringField(
         'Unique Session String',
         description="A short sequence of characters that your workshop participants will use to access the session.",
-        validators=[DataRequired()])
+        validators=[DataRequired(), Length(max=20)])
     unit_is_year = SelectField('Timeline Style', choices=[("year", "Yearlong"), ("life", "Lifelong")])
     submit = SubmitField('Create Workshop Session')
 
@@ -71,7 +71,7 @@ class WorkshopCreationForm(FlaskForm):
 
 
 class SingleTimelineEntryGeneral(FlaskForm):
-    body = TextAreaField('Post-It Body')
+    body = TextAreaField('Post-It Body', validators=[Optional(), Length(max=500)])
     on_sex = SelectField('Entry Type', choices=[("sex", 'Sexuality'), ("gender", 'Gender')])
 
 

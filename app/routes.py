@@ -31,7 +31,6 @@ def admin_panel():
     
     # Responing to a POST request
     if form.validate_on_submit(): 
-        print(form.erorrs)
         # Form submitted correctly.
         flash("Session created!")
 
