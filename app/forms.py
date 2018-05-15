@@ -5,7 +5,19 @@ from app.models import Admin
 import datetime
 
 
+'''
+This module contains classes that extend FlaskForm and 
+define the content of post requests that users may send to the app in order to: 
+    log administrators in
+    register new administrators
+    create new workshops
+    add post-its to a workshop's timeline.
+'''
+
 class AdminLoginForm(FlaskForm):
+    '''
+    The administrator log in form contains a username, password, and remember me field.
+    '''
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
@@ -13,6 +25,9 @@ class AdminLoginForm(FlaskForm):
 
 
 class AdminRegistration(FlaskForm):
+    '''
+    The administrator registration form contains a  
+    '''
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])

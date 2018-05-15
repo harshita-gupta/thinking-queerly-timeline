@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-<!-- 
+{% raw %} 
     Template for viewing a session's timeline.
 
-    Timeline HTML, CSS, and Javascript open-sourced by Envato Tuts+ at https://codepen.io/tutsplus/pen/QNeJgR. 
+    Timeline HTML, CSS, and Javascript open-sourced by Envato Tuts+ at https://codepen.io/tutsplus/pen/ZKpNwm.
     Modified for Flask and Jinja2 by Harshita Gupta.
 
     This template must be rendered with the following variables: 
         session: a database model objct of type WorkshopActivity
         posts: a list of database model objects of type PostIt, belonging to session.
- -->
+ {% endraw %}
 
 
- <!-- Links to a custom stylesheet and scripts file that render the timeline.  -->
+ {% raw %} Links to a custom stylesheet and scripts file that render the timeline.  {% endraw %}
 {% block styles %}
     {{super()}}
     <link rel="stylesheet" href="{{ url_for('static', filename='timeline-styles.css') }}">

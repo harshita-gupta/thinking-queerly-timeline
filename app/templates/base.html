@@ -1,19 +1,19 @@
 {% extends 'bootstrap/base.html' %}
 
-<!-- 
+{% raw %} 
 This is the base jinja template that defines the common html and assets across the website. 
 All jinja templates for other pages of the website extend from this one.
 
 This template is architected in accordance with the requirements of flask-bootstrap templates, 
 and defines content via its predefined macros of title, styles, navbar, and content.
 
-To define a new template that extends base.html, it must begin with {% extends "base.html" %}
-Content may be placed inside {% block app_content %} {% endblock %} template tags.
+To define a new template that extends base.html, it must begin with {percentage extends "base.html" percentage}
+Content may be placed inside { percentage block app_content percentage} {percentage endblock percentage} template tags.
 
 Since base.html extends from a flask-bootstrap template, adding custom stylesheets and javascript must 
 be done according to flask-bootstrap's requirements specified in the docs at
 https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
--->
+{% endraw %}
 
 {% block title %}
     Thinking Queerly Timelines
@@ -40,6 +40,7 @@ https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    <li></li>
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('login') }}">Admin Login</a></li>
                     {% else %}
@@ -52,8 +53,8 @@ https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
     </nav>
 {% endblock %}
 
-<!-- The only content that is universal across pages is the flash bar, 
-    that displays error and success messages. -->
+{% raw %} The only content that is universal across pages is the flash bar, 
+    that displays error and success messages. {% endraw %}
 {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
@@ -64,7 +65,7 @@ https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
         {% endif %}
         {% endwith %}
 
-        {# application content needs to be provided in the app_content block #}
+        {# {% raw %} application content needs to be provided in the app_content block {% endraw %} #}
         {% block app_content %}{% endblock %}
     </div>
 {% endblock %}

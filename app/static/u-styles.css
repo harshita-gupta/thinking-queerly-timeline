@@ -1,3 +1,5 @@
+/* Some custom styles. */
+
 form.zebra > div:nth-of-type(1) {
     background: #e0e0e0;
 }

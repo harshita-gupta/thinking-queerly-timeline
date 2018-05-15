@@ -1,3 +1,10 @@
+/* 
+  Modified from "Building a Horizontal Timeline with CSS and Javascript" 
+  by Envato Tuts+ at https://codepen.io/tutsplus/pen/ZKpNwm.
+
+  Includes on_sex class tag for differentiating between sex and gender post its. 
+ */
+
 *,
 *::before,
 *::after {

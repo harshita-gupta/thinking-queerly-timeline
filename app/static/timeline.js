@@ -1,3 +1,7 @@
+/* 
+  Copied unmodified from "Building a Horizontal Timeline with CSS and Javascript" 
+  by Envato Tuts+ at https://codepen.io/tutsplus/pen/ZKpNwm.
+ */
 (function() {
     
       // VARIABLES

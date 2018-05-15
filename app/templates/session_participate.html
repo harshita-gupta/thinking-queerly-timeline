@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-<!-- 
+{% raw %} 
     Template for the page via which workshop participants contribute post-its to a timeline. 
     Must be rendered with the following variables 
         session: a database model objct of type WorkshopActivity
         form: FlaskForm of type ContributeToTimelineYearlong, 
             or ContributeToTimelineLifelong (indicated by the value of session.unit_is_year).
--->
+{% endraw %}
 
 {% block app_content %}
 <h1>{{session.question}} </h1>
