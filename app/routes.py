@@ -1,5 +1,7 @@
-from flask import render_template, redirect, flash, url_for, request
+import csv
+from flask import render_template, redirect, flash, url_for, request, send_file
 from app import app, db
+from io import BytesIO, StringIO
 from app.forms import AdminLoginForm, AdminRegistration, ContributeToTimelineYearlong, ContributeToTimelineLifelong, WorkshopCreationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, WorkshopActivity, PostIt
@@ -53,8 +55,27 @@ def admin_panel():
 @app.route('/download_data/<session_str>', methods=['GET'])
 @login_required
 def download_data(session_str):
-    return
-
+    '''
+    This link will allow an administrator to download a CSV of session data. 
+    The page would not change, but a download would begin.
+    '''
+    workshop = WorkshopActivity.query.filter_by(unique_str=session_str).first()
+    postits = workshop.postits.order_by(
+        PostIt.mdy_timestamp if workshop.unit_is_year else PostIt.year_timestamp).all()
+    f = BytesIO()
+    s = StringIO()
+    writer = csv.writer(s)
+    writer.writerow(['id', 'body', 'year_stamp', 'mdy_timestamp', 'on_sex', 'session_id'])
+    for p in postits:
+        writer.writerow([p.id, p.body, p.year_timestamp, p.mdy_timestamp, p.on_sex, p.session_id])
+    s.seek(0)
+    f.write(s.getvalue().encode())
+    f.seek(0)
+    return send_file(f,
+                     mimetype='text/csv',
+                     attachment_filename='%s.csv' % session_str,
+                     as_attachment=True)
+    
 
 @app.route('/delete_session/<session_str>', methods=['GET'])
 @login_required

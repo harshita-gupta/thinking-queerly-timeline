@@ -35,6 +35,8 @@
                         <th>Creator</th>
                         <th>Participant Form</th>
                         <th>View Timeline</th>
+                        <th>Download Data</th>
+                        <th>Delete Session</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,10 +54,23 @@
                         </td>
                         <td>{{session.creator.username}} </td>
                         <td>
+                            <!-- link to participant form -->
                             <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">{{url_for('session_id_participate', session_str=session.unique_str)}}</a>
                         </td>
-                        <td> 
+                        <td>
+                            <!-- link to timeline viewing page  -->
                             <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">{{url_for('session_id_view', session_str=session.unique_str)}}</a>
+                        </td>
+                        <td>
+                            <!-- button to download data -->
+                            <button type="button" class="btn btn-dark">
+                                <a href="{{url_for('download_data', session_str=session.unique_str)}}" >
+                                    Download Data
+                                </a>
+                            </button>
+                        </td>
+                        <td>
+                            <!-- button to delete session -->
                         </td>
                     </tr>
                     {% endfor %}

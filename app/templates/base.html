@@ -40,13 +40,15 @@ https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right" style="color:white;">
-                    <li></li>
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('login') }}" style="color:white;">Admin Login</a></li>
                     {% else %}
                     <li><a href="{{ url_for('admin_panel') }} " style="color:white;">Admin Panel</a></li>
                     <li><a href="{{ url_for('logout') }}" style="color:white;">Logout</a></li>
                     {% endif %}
+                    <li><!-- Place this tag where you want the button to render. -->
+                        <!-- <a class="button github-button" href="https://github.com/harshita-gupta/thinking-queerly-timeline" aria-label="Star harshita-gupta/thinking-queerly-timeline on GitHub">Star</a> -->
+                    </li>
                 </ul>
             </div>
         </div>
@@ -68,4 +70,5 @@ https://pythonhosted.org/Flask-Bootstrap/basic-usage.html.
         {# {% raw %} application content needs to be provided in the app_content block {% endraw %} #}
         {% block app_content %}{% endblock %}
     </div>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 {% endblock %}
