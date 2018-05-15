@@ -62,15 +62,27 @@ def download_data(session_str):
     workshop = WorkshopActivity.query.filter_by(unique_str=session_str).first()
     postits = workshop.postits.order_by(
         PostIt.mdy_timestamp if workshop.unit_is_year else PostIt.year_timestamp).all()
-    f = BytesIO()
-    s = StringIO()
+    
+    # The below code uses flask's provided send_file function to send a file to 
+    # the client requesting it. 
+    # Since csv.writer cannot write bytes in python3, 
+    # but flask's send_file method requires bytes in pyhton3, 
+    # we must initialize two I/O streams for our operation.
+
+    f = BytesIO()  # the stream that will be sent as a file to the user
+    s = StringIO()  # the string stream that the CSV will first be written to 
+    
+    # Writing the CSV to the string stream
     writer = csv.writer(s)
     writer.writerow(['id', 'body', 'year_stamp', 'mdy_timestamp', 'on_sex', 'session_id'])
-    for p in postits:
-        writer.writerow([p.id, p.body, p.year_timestamp, p.mdy_timestamp, p.on_sex, p.session_id])
+    [writer.writerow([p.id, p.body, p.year_timestamp, p.mdy_timestamp, p.on_sex, p.session_id]) for p in postits]
+
+    # Encoding the string CSV into bytes
     s.seek(0)
     f.write(s.getvalue().encode())
     f.seek(0)
+
+    # Sending the byte file to the client
     return send_file(f,
                      mimetype='text/csv',
                      attachment_filename='%s.csv' % session_str,
@@ -80,7 +92,11 @@ def download_data(session_str):
 @app.route('/delete_session/<session_str>', methods=['GET'])
 @login_required
 def delete_session(session_str):
-    print("delete entered")
+    # Currently, since this a demo application, deleting sessions does not do anything. 
+    # Eventually, it will delete the WorkshopActivity row that corresponds to session_str, 
+    # and will also delete any associated post-its. 
+    # The intention of this feature is to stay within the constraints of 
+    # Heroku's free tier.
     return redirect(url_for('admin_panel'))
 
 '''
