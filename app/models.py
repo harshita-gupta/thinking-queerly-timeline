@@ -60,6 +60,7 @@ class WorkshopActivity(db.Model):
     unit_is_year = db.Column(db.Boolean(), default=False)
     admin_owner = db.Column(db.Integer, db.ForeignKey("admin.id"))
     postits = db.relationship('PostIt', backref='session', lazy='dynamic')
+    active = db.Column(db.Boolean(), default=True)
 
 
 class PostIt(db.Model):
