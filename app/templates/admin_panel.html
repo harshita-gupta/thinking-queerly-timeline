@@ -45,7 +45,7 @@
                     <tr>
                         <td>
                             <a href="{{url_for('toggle_session_status', session_str=session.unique_str, current_status=session.active)}}" >
-                            <button type="button" class="btn">
+                            <button type="button" class="btn" style="white-space: normal">
                                 {% if session.active %} 
                                 Close Submissions
                                 {% else %}
@@ -79,13 +79,13 @@
                         <td>
                             <!-- button to download data -->                            
                             <a href="{{url_for('download_data', session_str=session.unique_str)}}" >
-                                <button type="button" class="btn btn-dark">Download Data</button>
+                                <button style="white-space: normal" type="button" class="btn btn-dark">Download Data</button>
                             </a>
                         </td>
                         <td>
                             <!-- button to delete session data and free up DB space -->
                             <a href="{{url_for('delete_session', session_str=session.unique_str)}}" >
-                                <button type="button" onclick="return confirm('Are you sure? This is a dummy button for now.')" class="btn btn-dark">
+                                <button style="white-space: normal" type="button" onclick="return confirm('Are you sure? This is a dummy button for now.')" class="btn btn-dark">
                                     Delete Session                                       
                                 </button>
                             </a>
