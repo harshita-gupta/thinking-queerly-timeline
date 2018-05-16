@@ -13,83 +13,92 @@
 
 
 <div class="container" style="padding: 10px; ">
-    <h1>Sessions List</h1>
-        <br/>
-        <div id="toolbar"></div>
-        {% if sessions is defined %}
-            <div class="table-responsive">            
-                <table
-                class="table table-striped table-bordered"
-                id="table"
-                data-toggle="true"
-                data-toolbar="#toolbar"
-                data-search="true"
-                data-show-columns="true"
-                data-pagination="true"
-                data-height="500">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Date</th> 
-                            <th>Question</th>
-                            <th>Timeline Range</th>
-                            <th>Creator</th>
-                            <th>Participant Form</th>
-                            <th>View Timeline</th>
-                            <th>Download Data</th>
-                            <th>Delete Session</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for session in sessions %}
-                        <tr>
-                            <td>{{session.name}} </td>
-                            <td>{{session.date.strftime('%m-%d')}} </td>
-                            <td>{{session.question}} </td>
-                            <td>
-                                {% if session.unit_is_year %} 
-                                    Year-Round
+    <h1>Sessions List</h1><br/>
+    <div id="toolbar"></div>
+    {% if sessions is defined %}
+        <div class="table-responsive">            
+            <table
+            class="table table-striped table-bordered"
+            id="table"
+            data-toggle="true"
+            data-toolbar="#toolbar"
+            data-search="true"
+            data-show-columns="true"
+            data-pagination="true"
+            data-height="500">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Date</th> 
+                        <th>Question</th>
+                        <th>Timeline Range</th>
+                        <th>Participant Form</th>
+                        <th>View Timeline</th>
+                        <th>Download Data</th>
+                        <th>Delete Session</th>
+                        <th>Creator</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in sessions %}
+                    <tr>
+                        <td>
+                            <a href="{{url_for('toggle_session_status', session_str=session.unique_str, current_status=session.active)}}" >
+                            <button type="button" class="btn">
+                                {% if session.active %} 
+                                Close Submissions
                                 {% else %}
-                                    Lifelong
+                                Open Submissions
                                 {% endif %}
-                            </td>
-                            <td>{{session.creator.username}} </td>
-                            <td>
-                                <!-- link to participant form -->
-                                <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">
-                                    {{url_for('session_id_participate', session_str=session.unique_str)}}
-                                </a>
-                            </td>
-                            <td>
-                                <!-- link to timeline viewing page  -->
-                                <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">
-                                    {{url_for('session_id_view', session_str=session.unique_str)}}
-                                </a>
-                            </td>
-                            <td>
-                                <!-- button to download data -->
-                                <button type="button" class="btn btn-dark">
-                                    <a href="{{url_for('download_data', session_str=session.unique_str)}}" >
-                                        Download Data
-                                    </a>
-                                </button>
-                            </td>
-                            <td>
-                                <!-- button to delete session data and free up DB space -->
+                            </button>
+                            </a>
+                        </td>
+                        <td>{{session.name}} </td>
+                        <td>{{session.date.strftime('%m-%d')}} </td>
+                        <td>{{session.question}} </td>
+                        <td>
+                            {% if session.unit_is_year %} 
+                                Year-Round
+                            {% else %}
+                                Lifelong
+                            {% endif %}
+                        </td>
+                        <td>
+                            <!-- link to participant form -->
+                            <a href="{{url_for('session_id_participate', session_str=session.unique_str)}}">
+                                {{url_for('session_id_participate', session_str=session.unique_str)}}
+                            </a>
+                        </td>
+                        <td>
+                            <!-- link to timeline viewing page  -->
+                            <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">
+                                {{url_for('session_id_view', session_str=session.unique_str)}}
+                            </a>
+                        </td>
+                        <td>
+                            <!-- button to download data -->                            
+                            <a href="{{url_for('download_data', session_str=session.unique_str)}}" >
+                                <button type="button" class="btn btn-dark">Download Data</button>
+                            </a>
+                        </td>
+                        <td>
+                            <!-- button to delete session data and free up DB space -->
+                            <a href="{{url_for('delete_session', session_str=session.unique_str)}}" >
                                 <button type="button" onclick="return confirm('Are you sure? This is a dummy button for now.')" class="btn btn-dark">
-                                    <a href="{{url_for('delete_session', session_str=session.unique_str)}}" >
-                                        Delete Session                                       
-                                    </a>
+                                    Delete Session                                       
                                 </button>
-                                </input>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            No sessions exist
-        {% endif %}
+                            </a>
+                            </input>
+                        </td>
+                        <td>{{session.creator.username}} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        No sessions exist
+    {% endif %}
 </div>
 {% endblock %}

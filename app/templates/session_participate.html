@@ -15,9 +15,10 @@
 <h3>{{session.date.strftime('%B %e, %Y')}}</h3>
 <h4>
     View the timeline contributions <a href="{{url_for('session_id_view', session_str=session.unique_str)}}">here.</a>
-</h4>
+</h4><br>
 <div class="container">
     <div class="row">
+        {% if session.active %}
         <form class="form form-horizontal form-group" action="" method="post" role="form">
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
@@ -33,6 +34,9 @@
                 {{form.submit()}}
             </div>
         </form>
+        {% else %}
+        This timeline is currently closed for submissions. Contact QuOffice staff if you think this is a mistake.
+        {% endif %}
     </div>
 </div>
 

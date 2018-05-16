@@ -100,6 +100,17 @@ def delete_session(session_str):
     # Heroku's free tier.
     return redirect(url_for('admin_panel'))
 
+
+@app.route('/toggle_session_status/<session_str>', methods=['GET'])
+@login_required
+def toggle_session_status(session_str):
+    workshop = WorkshopActivity.query.filter_by(unique_str=session_str).first()
+    print("toggling status")
+    workshop.active = not workshop.active
+    db.session.commit()
+    return redirect(url_for('admin_panel'))
+
+    
 '''
 TIMELINE CONTRIBUTION AND VIEWING FUNCTIONS
 '''
