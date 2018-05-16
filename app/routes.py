@@ -50,7 +50,7 @@ def admin_panel():
         pass
 
     # Return to the admin panel after any operations occur.
-    return render_template("admin_panel.html", form=form, sessions=WorkshopActivity.query.all())
+    return render_template("admin_panel.html", form=form, sessions=WorkshopActivity.query.order_by(WorkshopActivity.date).all())
 
 
 @app.route('/download_data/<session_str>', methods=['GET'])
