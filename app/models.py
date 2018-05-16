@@ -61,6 +61,7 @@ class WorkshopActivity(db.Model):
     admin_owner = db.Column(db.Integer, db.ForeignKey("admin.id"))
     postits = db.relationship('PostIt', backref='session', lazy='dynamic')
     active = db.Column(db.Boolean(), default=True)
+    enable_monitoring = db.Column(db.Boolean(), default=False)
 
 
 class PostIt(db.Model):
@@ -70,3 +71,4 @@ class PostIt(db.Model):
     mdy_timestamp = db.Column(db.Date, index=True)
     on_sex = db.Column(db.Boolean(), default=True)
     session_id = db.Column(db.Integer, db.ForeignKey('workshop_activity.id'))
+    approved = db.Column(db.Boolean(), default=True)
